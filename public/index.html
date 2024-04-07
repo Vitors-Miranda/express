@@ -1,0 +1,112 @@
+<!-- 
+    Práctica: Aplicación web cliente básica
+    Autor: Vitor Samuel Miranda de Souza 
+    Curso: Ingeniería Telemática
+    Asignatura: Sistemas y Aplicaciones Telemática
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog de la asignatura SSAATT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="center flex-column">
+    <header class=" center">
+        Blog de la asignatura SSAATT
+    </header>
+    <nav class=" ">
+        <ul class="center">
+            <li class="tab" id="tab-login">Inicio </li>
+            <li class="tab" id="tab-registro">Registrarse</li>
+            <li class="tab" id="tab-blog">Blog </li>
+            <li class="tab" id="tab-add">Nueva entrada </li>
+            <li class="tab" id="tab-sobre">Acerca de</li>
+        </ul>
+    </nav>
+    <main class="center ">
+        <section class="center flex-column" id="login">
+            <h2>Login de usuario</h2>
+                    </div>
+            <div class="center flex-column w-100">
+                <form class="w-100 center flex-column" id="login-form">
+                        <input type="text" name="user" placeholder="user" minlength="4" maxlength="16" required>
+                        <input type="password" name="password" placeholder="password"  minlength="4" maxlength="16" required>
+                        <button type="submit" class="btn">Enviar</button>
+                </form>
+            </div>
+        </section>
+        <section class="center flex-column" id="sign">
+            <h2>Registro de usuario</h2>
+                    </div>
+            <div class="center flex-column w-100">
+                <form id="register-form" class="w-100 center flex-column">
+                        <input type="text" name="user" placeholder="user" minlength="4" maxlength="16" checked>
+                        <input type="password" name="password" placeholder="password"  minlength="4" maxlength="16" checked>
+                        <input type="text" name="name" placeholder="name" maxlength="32" checked>
+                        <input type="text" name="surname" placeholder="surname">
+                        <input type="email" name="email" placeholder="email" checked>
+                        <button type="submit" class="btn">Enviar</button>
+                </form>
+            </div>
+        </section>
+        <section class="center flex-column" id="sobre">
+            <h2>Vitor Samuel Miranda de Souza</h2>
+                    </div>
+            <div class="center flex-column w-100">
+                <p class="text">
+                    Curso: Ingeniería Telemática <br>
+                    Nacionalidad: Brasileño <br>
+                    TIE: E26357607
+                </p>
+                <a href="https://github.com/Vitors-Miranda" class="aceso" target="_blank">Aceso ao github</a>
+            </div>
+        </section>
+        <section class="center flex-column" id="blog">
+            <h2>Entradas del blog</h2>
+            <button class="btn" id="btndescargar">Descargar</button>
+            <div class="scroll">
+                <table class="table" id="blogtable">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Data</th>
+                            <th>Comentário</th> 
+                        </tr>
+                        
+                    </thead>
+                    <tbody id="table-body">
+    
+                    </tbody>
+                </table>
+            </div>
+            
+        </section>
+        <section class="center flex-column" id="add">
+            <h2>Nueva entrada del blog</h2>
+        <div class="center flex-column w-100">
+            <form id="blog-form" class="w-100 center flex-column">
+                    <input type="text" name="title" placeholder="título" minlength="4" maxlength="16" checked>
+                    <input type="date" name="date" placeholder="fecha" checked>
+                    <label for="comment">Comentário</label>
+                    <textarea name="comment" id="comment" cols="30" rows="5" checked></textarea>
+                    <button type="submit" class="btn">Enviar</button>
+            </form>
+        </div>
+        </section>
+        <aside class="center flex-column">
+            <p class="text" id="aside">
+                Ingrese el usuario y contraseña registrados en el sistema. Si no tiene una cuenta, cree una en la sección "registrarse".
+            </p>
+        </aside>
+        <div class="warning center" id="warning">
+
+        </div>
+    </main>
+    <footer class="center">
+        <p>Vitor Samuel Miranda de Souza - Telemática</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

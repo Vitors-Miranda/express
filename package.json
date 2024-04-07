@@ -1,0 +1,22 @@
+{
+  "name": "practica3",
+  "version": "1.0.0",
+  "description": "servicios y aplicaciones teleaticaas - aplicacion web en el servidor",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "mongodb"
+  ],
+  "author": "vitor samuel miranda de souza",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongodb": "^6.5.0",
+    "mustache": "^4.2.0",
+    "mustache-express": "^1.3.2"
+  }
+}
