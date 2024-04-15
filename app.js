@@ -18,6 +18,7 @@ const Mustache = require("mustache"); //Módulo para el motor de plantilla Musta
 const mustacheExpress = require("mustache-express"); //Módulo para el motor de plantilla Mustache / Module for the template engine Mustache
 const dns = require("dns"); //Módulo para emplear el servicio DNS / Module for DNS service
 const os = require("os"); //Módulo de información relativa al sistema operativo y el host / Module to get OS information
+const { ObjectId } = require("mongodb");
 
 const app = express(); //Instancia de Express / Express instance
 
@@ -217,8 +218,40 @@ app.put("/blog", (req, res) => {
 });
 
 //Tarea 4: servicio DELETE /blog/id
-app.delete("/blog", (req, res) => {
-  res.status(200).end();
+app.delete("/blog/:id", (req, res) => {
+  console.log("[SERVIDOR] DELETE /id Recibido:" + JSON.stringify(req.params.id));
+  if (req.params.id === undefined) {
+    res.status(400).end("data not found"); 
+    return;
+  }
+
+  const client = new MongoClient(urlMongoDB)
+  
+  async function run(){
+    try{
+      const db = client.db(DB_NAME)
+      const entries = db.collection(DB_COLLECTION_ENTRIES);
+      const id = new ObjectId(req.params.id)
+      const entriesCount = await entries.countDocuments({_id: id})
+      if(entriesCount != 0){
+        const result = await entries.deleteOne({_id: id})
+        console.log(`Documento deletado`);
+        res.setHeader("Content-Type", "application/json");
+        res.status(201).end();
+      } else{
+        console.log(
+          `El entri con id ${req.params.id} no existe en la base de datos`
+        );
+        res.status(400).end();
+      }
+    } finally {
+      await client.close();
+    }
+  }
+  
+  run().catch(() => {
+    res.status(500).end();
+  });
 });
 
 //Tarea 5: servicio GET /blog/entries/user
