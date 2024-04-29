@@ -79,6 +79,7 @@ function Blog() {
 // Show the list
 btndescargar.addEventListener("click", () =>{
     blogtable.style="display: table"
+    List(global_usuario)
 })
 
 // Add new blog entries
@@ -116,8 +117,8 @@ login_form.addEventListener("submit", (e) => {
                 btn_registro.style = "display: none"
                 btn_blog.style = "display: block"
                 btn_add.style = "display: block"
+                global_usuario = datos.user
                 Blog()
-                List(datos.user)
             }
         });
 })
@@ -196,7 +197,6 @@ function Delete(id, usuario){
 }
 // function to list the blog entries
 function List(usuario) {
-    global_usuario = usuario;
     fetch("/blog/entries/" + usuario, {
         method: "GET"
     })
@@ -204,22 +204,12 @@ function List(usuario) {
         if (!data.ok) {
             return data.status
         }
-        return data.json();
+        return data.text();
     })
     .then(data => {
-        
-        tbody.innerText = ""
-            for ( value of data) {
-                tbody.innerHTML += `
-                <tr>
-                    <td> ${value.title} </td>
-                    <td> ${value.date} </td>
-                    <td> ${value.comment} </td>
-                    <td class="btn-delete" onclick="Delete('${value._id}', '${value.user}')"> <i class="fa fa-trash-o"></i> </td>
-                </tr>
-                `
-            }
-            
+        // for(let value of data) ...
+        //tbody.innerHTML = `<tr><td> ${value.title}</td></tr>`
+        tbody.innerHTML = data
     })
     .catch(error => {
         console.error('Erro:', error);

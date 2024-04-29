@@ -253,6 +253,10 @@ app.delete("/blog/:id", (req, res) => {
   });
 });
 
+app.engine('mustache', mustacheExpress())
+app.set('view engine', 'mustache')
+app.set('views', __dirname + '/views');
+
 //Tarea 5: servicio GET /blog/entries/user
 app.get("/blog/entries/:user", (req, res) => {
   console.log("[SERVIDOR] GET /id Recibido:" + JSON.stringify(req.params.user));
@@ -270,16 +274,9 @@ app.get("/blog/entries/:user", (req, res) => {
       const entriesList = await entries.find({"user" : req.params.user}).toArray()
       if(entriesCount != 0){
         res.setHeader("Content-Type","application/json")
-
-        // app.engine('mustache', mustacheExpress())
-        // app.set('view engine', 'mustache')
-        // app.set('views', path.join(__dirname, 'views'));
-        // res.render("entries", { entries: entriesList })
         
-        // res.send(JSON.stringify({"entries" : entriesList}))
-        res.send(JSON.stringify(entriesList))
+        res.render("entries", { entries: entriesList })
 
-        res.status(200).end();
       } else {
         res.status(400).end();
       }
