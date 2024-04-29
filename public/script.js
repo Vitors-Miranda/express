@@ -174,14 +174,30 @@ register_form.addEventListener("submit", (e) => {
                 register_form.reset();
                 Home()
             }
-            
         });
 })
-
+function Delete(id, usuario){
+    fetch("/blog/" + id, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then((data) => {
+            if(data.status == 400){
+                Warning("La entrada no foi deletada")
+            }
+            if(data.status == 201){
+                Warning("Entrada deletada")
+                register_form.reset();
+                List(usuario)
+            }
+        });
+}
 // function to list the blog entries
 function List(usuario) {
     global_usuario = usuario;
-    fetch("/blog/" + usuario, {
+    fetch("/blog/entries/" + usuario, {
         method: "GET"
     })
     .then(data => {
@@ -191,6 +207,7 @@ function List(usuario) {
         return data.json();
     })
     .then(data => {
+        
         tbody.innerText = ""
             for ( value of data) {
                 tbody.innerHTML += `
@@ -198,9 +215,11 @@ function List(usuario) {
                     <td> ${value.title} </td>
                     <td> ${value.date} </td>
                     <td> ${value.comment} </td>
+                    <td class="btn-delete" onclick="Delete('${value._id}', '${value.user}')"> <i class="fa fa-trash-o"></i> </td>
                 </tr>
                 `
             }
+            
     })
     .catch(error => {
         console.error('Erro:', error);

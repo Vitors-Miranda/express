@@ -10,7 +10,6 @@
  * CURSO ACADÉMICO: 2022-2023
  * AUTOR/ES: <poner nombre/s>
  *********************************************************************************************/
-
 const express = require("express"); //Módulo de express / Express module
 const path = require("path"); //Módulo para manejar rutas de archivos / Module to handle file paths
 const MongoClient = require("mongodb").MongoClient; // Módulo de gestión MongoDB / Module to manage MongoDB
@@ -256,7 +255,42 @@ app.delete("/blog/:id", (req, res) => {
 
 //Tarea 5: servicio GET /blog/entries/user
 app.get("/blog/entries/:user", (req, res) => {
-  res.status(200).end();
+  console.log("[SERVIDOR] GET /id Recibido:" + JSON.stringify(req.params.user));
+  if (req.params.user === undefined) {
+    res.status(400).end("data not found"); 
+    return;
+  }
+
+  const client = new MongoClient(urlMongoDB)
+  async function run() {
+    try{
+      const db = client.db(DB_NAME)
+      const entries = db.collection(DB_COLLECTION_ENTRIES)
+      const entriesCount = await entries.countDocuments({"user" : req.params.user})
+      const entriesList = await entries.find({"user" : req.params.user}).toArray()
+      if(entriesCount != 0){
+        res.setHeader("Content-Type","application/json")
+
+        // app.engine('mustache', mustacheExpress())
+        // app.set('view engine', 'mustache')
+        // app.set('views', path.join(__dirname, 'views'));
+        // res.render("entries", { entries: entriesList })
+        
+        // res.send(JSON.stringify({"entries" : entriesList}))
+        res.send(JSON.stringify(entriesList))
+
+        res.status(200).end();
+      } else {
+        res.status(400).end();
+      }
+      
+    } finally {
+      await client.close()
+    }
+  }
+  run().catch(() =>{
+    res.status(500).end()
+  })
 });
 
 /******* FIN PRÁCTICA 3 **********/
