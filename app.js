@@ -138,7 +138,7 @@ app.put("/user", function (req, res) {
 /* [Aportado por el profesor] Servicio GET /blog para obtener todas las entradas del blog de un usuario
    [Contributed by teacher] GET /blog service to get all the blog entries of a user
  */
-app.get("/blog", async function (req, res) {
+app.get("/blog/:id", async function (req, res) {
   //Se declara la función como asíncrona para poder usar await / The function is declared as asynchronous to be able to use await
   console.log("[SERVIDOR][/blog]");
 
@@ -152,7 +152,7 @@ app.get("/blog", async function (req, res) {
     }; //Se prepara la ordenación por orden asecendente de fechas./ sorting by ascending order of dates
 
     //Se optiene un cursor con los resultados de la búsqueda / A cursor to iterate search results
-    const cursor = collection.find({}, options);
+    const cursor = collection.find({user: req.params.id}, options);
 
     if (cursor !== null) {
       let result = [];
@@ -253,8 +253,8 @@ app.delete("/blog/:id", (req, res) => {
   });
 });
 
-app.engine('mustache', mustacheExpress())
-app.set('view engine', 'mustache')
+app.engine('html', mustacheExpress())
+app.set('view engine', 'html')
 app.set('views', __dirname + '/views');
 
 //Tarea 5: servicio GET /blog/entries/user
@@ -273,7 +273,7 @@ app.get("/blog/entries/:user", (req, res) => {
       const entriesCount = await entries.countDocuments({"user" : req.params.user})
       const entriesList = await entries.find({"user" : req.params.user}).toArray()
       if(entriesCount != 0){
-        res.setHeader("Content-Type","application/json")
+        // res.setHeader("Content-Type","application/json")
         
         res.render("entries", { entries: entriesList })
 

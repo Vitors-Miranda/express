@@ -197,19 +197,28 @@ function Delete(id, usuario){
 }
 // function to list the blog entries
 function List(usuario) {
-    fetch("/blog/entries/" + usuario, {
+    fetch("/blog/" + usuario, {
         method: "GET"
     })
     .then(data => {
         if (!data.ok) {
             return data.status
         }
-        return data.text();
+        return data.json();
     })
     .then(data => {
-        // for(let value of data) ...
-        //tbody.innerHTML = `<tr><td> ${value.title}</td></tr>`
-        tbody.innerHTML = data
+        
+        tbody.innerText = ""
+            for ( value of data) {
+                tbody.innerHTML += `
+                <tr>
+                    <td> ${value.title} </td>
+                    <td> ${value.date} </td>
+                    <td> ${value.comment} </td>
+                    <td class="btn-delete" onclick="Delete('${value._id}', '${value.user}')"> <i class="fa fa-trash-o"></i> </td>
+                </tr>
+                `
+            }
     })
     .catch(error => {
         console.error('Erro:', error);
